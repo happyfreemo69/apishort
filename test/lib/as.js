@@ -159,7 +159,7 @@ describe('lib/as',function(){
                     {
                         type:'building'
                     }
-                ])   
+                ])
             }
             if(url.includes('bbq')){
                 return Promise.resolve([
@@ -186,6 +186,41 @@ describe('lib/as',function(){
         })
     }));
 
+    it('can filter', Mocker.mockIt(function(mokr){
+
+        mokr.mock(ApiClient, 'fetch', url=>{
+            return Promise.resolve([
+                {
+                    id:'A',
+                    type:'house',
+                    links:{
+                        bbqDetail:'bbqA'
+                    }
+                },
+                {
+                    id:'B',
+                    type:'house',
+                    links:{
+                        bbqDetail:'bbqB'
+                    }
+                },
+                {
+                    type:'building'
+                },
+                {
+                    type:'building'
+                }
+            ])
+        })
+        var as = As([{
+            links:{
+                zones:'zones'
+            }
+        }]);
+        return as.zones().filter(x=>x.type=='house').then(res=>{
+            assert.equal(res.length, 2);
+        })
+    }));
     it('can chain even if single element returned', Mocker.mockIt(function(mokr){
 
         mokr.mock(ApiClient, 'fetch', url=>{

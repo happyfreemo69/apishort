@@ -44,7 +44,7 @@ Consider that I want to list my buildings with detail please
 
 This library enables the oneliner
 
-    As([{links:{endpoints:'/v1/endpoints'}}]).endpoints().me().zoneApps().reduce((acc,x)=>acc.concat(x.type=='building'?x:[]),[]).details().then(housedetails=>{
+    As([{links:{endpoints:'/v1/endpoints'}}]).endpoints().me().zoneApps().filter(x=>x.type=='building').details().then(housedetails=>{
         //[{id:'housedetail'}]
     })
 
@@ -80,6 +80,8 @@ Then and Catch the exception as usual
     As(x).then(arr=>...).catch(e=>...)
 
 ### Configuration ###
+
+You may use your own Promise library
 
     var As = requrie('apishort');
     As.Promise = require('bluebird')
